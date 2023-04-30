@@ -39,37 +39,216 @@ closeSearch.forEach(function (el) {
 
 // header enter
 
-let enterBtn = document.querySelector('.header__btn-top');
+// let enterBtn = document.querySelector('.header__btn-top');
 
-let enterBtn2 = document.querySelector('.header__form');
+// let enterBtn2 = document.querySelector('.header__form');
 
-let closeBtn = document.querySelectorAll('.header__form-close');
+// let closeBtn = document.querySelectorAll('.header__form-close');
 
-enterBtn.addEventListener('click', function () {
+// enterBtn.addEventListener('click', function () {
 
-  enterBtn.classList.toggle('enter-search--active');
+//   enterBtn.classList.toggle('enter-search--active');
 
-  enterBtn2.classList.toggle('form__search--active');
+//   enterBtn2.classList.toggle('form__search--active');
 
-  document.body.classList.toggle('stop--scroll');
+//   document.body.classList.toggle('stop--scroll');
 
-});
+// });
 
-closeBtn.forEach(function (el) {
-  el.addEventListener('click', function () {
+// closeBtn.forEach(function (el) {
+//   el.addEventListener('click', function () {
 
-    enterBtn2.classList.remove('form__search--active');
+//     enterBtn2.classList.remove('form__search--active');
 
-  });
+//   });
 
-});
+// });
 
-closeBtn.forEach(function (el) {
-  el.addEventListener('click', function () {
+// closeBtn.forEach(function (el) {
+//   el.addEventListener('click', function () {
 
-    enterBtn.classList.remove('enter-search--active');
+//     enterBtn.classList.remove('enter-search--active');
 
-  });
+//   });
+
+// });
+
+
+
+// header enter new
+
+class Modal {
+
+  constructor(options) {
+    let defaulOptions = {
+      isOpen: () => { },
+      isClose: () => { }
+    }
+    this.options = Object.assign(defaulOptions, options);
+    this.modal = document.querySelector('.modal');
+    this.speed = false;
+    this.animation = false;
+    this.isOpen = false;
+    this.headerFormModal = false; //modalContainer
+    this.previousActiveElement = false;
+    this.fixBlocks = document.querySelectorAll('.fix-block');
+    this.focusElements = [
+      'a[href]',
+      'input',
+      'button',
+      'select',
+      'textarea',
+      '[tabindex]'
+    ];
+    this.events();
+  }
+
+  events() {
+    if (this.modal) {
+      document.addEventListener('click', function (e) {
+        const clickedElement = e.target.closest('[data-trigger]');
+        if (clickedElement) {
+          let target = clickedElement.dataset.trigger;
+          let animation = clickedElement.dataset.animation;
+          let speed = clickedElement.dataset.speed;
+          this.animation = animation ? animation : 'fade';
+          this.speed = speed ? parseInt(speed) : 300;
+          this.headerFormModal = document.querySelector(`[data-modal="${target}"]`);
+          this.open();
+          return;
+        }
+
+        if (e.target.closest('.modal-close')) {
+          this.close();
+          return;
+        }
+
+      }.bind(this));
+
+      window.addEventListener('keydown', function (e) {
+        if (e.keyCode == 27) {
+          if (this.isOpen) {
+            this.close();
+          }
+        }
+        if (e.keyCode == 9 && this.isOpen) {
+          this.focusCatch(e);
+          return;
+        }
+      }.bind(this));
+
+      this.modal.addEventListener('click', function (e) {
+        if (!e.target.classList.contains('header__form-modal') && !e.target.closest('.header__form-modal') && this.isOpen) {
+          this.close();
+        }
+      }.bind(this));
+
+    }
+  }
+
+  open() {
+    // открыть окно +
+    // сайт не скролится +
+    // нет прыжка +
+    // фокус внутри окна +
+    // выделение первого +
+    // анимации +
+    this.previousActiveElement = document.activeElement;
+    this.modal.style.setProperty('--transition-time', `${this.speed / 1000}s`);
+    this.modal.classList.add('is-open');
+    this.disableScroll();
+
+    this.headerFormModal.classList.add('modal-open');
+    this.headerFormModal.classList.add(this.animation);
+
+    setTimeout(() => {
+      this.options.isOpen(this);
+      this.headerFormModal.classList.add('animate-open');
+      this.isOpen = true;
+      this.focusTrap();
+    }, this.speed);
+  }
+
+  close() {
+    if (this.headerFormModal) {
+      this.headerFormModal.classList.remove('animate-open');
+      this.headerFormModal.classList.remove(this.animation);
+      this.modal.classList.remove('is-open');
+      this.headerFormModal.classList.remove('modal-open');
+
+      this.enableScroll();
+      this.options.isClose(this);
+      this.isOpen = false;
+      this.focusTrap();
+    }
+  }
+
+  focusCatch(e) {
+    const focusable = this.headerFormModal.querySelectorAll(this.focusElements);
+    const focusArray = Array.prototype.slice.call(focusable);
+    const focusedIndex = focusArray.indexOf(document.activeElement);
+
+    if (e.shiftKey && focusedIndex === 0) {
+      focusArray[focusArray.length - 1].focus();
+      e.preventDefault();
+    }
+
+    if (!e.shiftKey && focusedIndex === focusArray.length - 1) {
+      focusArray[0].focus();
+      e.preventDefault();
+    }
+  }
+
+  focusTrap() {
+    const focusable = this.headerFormModal.querySelectorAll(this.focusElements);
+    if (this.isOpen) {
+      focusable[0].focus();
+    } else {
+      this.previousActiveElement.focus();
+    }
+  }
+
+  disableScroll() {
+    let pagePosition = window.scrollY;
+    this.lockPadding();
+    document.body.classList.add('disable-scroll');
+    document.body.dataset.position = pagePosition;
+    document.body.style.top = -pagePosition + 'px';
+  }
+
+  enableScroll() {
+    let pagePosition = parseInt(document.body.dataset.position, 10);
+    this.unlockPadding();
+    document.body.style.top = 'auto';
+    document.body.classList.remove('disable-scroll');
+    window.scroll({ top: pagePosition, left: 0 });
+    document.body.removeAttribute('data-position');
+  }
+
+  lockPadding() {
+    let paddingOffset = window.innerWidth - document.body.offsetWidth + 'px';
+    this.fixBlocks.forEach((el) => {
+      el.style.paddingRight = paddingOffset;
+    });
+    document.body.style.paddingRight = paddingOffset;
+  }
+
+  unlockPadding() {
+    this.fixBlocks.forEach((el) => {
+      el.style.paddingRight = '0px';
+    })
+    document.body.style.paddingRight = '0px';
+  }
+
+}
+
+const modal = new Modal({
+
+  isOpen: (modal) => {
+    modal.headerFormModal.classList.add('asd');
+  },
+  isClose: () => {
+  },
 
 });
 
@@ -260,7 +439,7 @@ validation.addField('#name', [
 
   ])
 
-  // burger
+// burger
 
 let burger = document.querySelector('.burger');
 
