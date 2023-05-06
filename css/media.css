@@ -12,6 +12,13 @@
 * Browsers: last 4 version
 */
 
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
 @media (max-width: 1286px) {
 
   /* header */
@@ -246,7 +253,7 @@
   /* podcast */
 
   .podcast {
-    padding-bottom: 32px;
+    padding-bottom: 55px;
   }
 
   .podcast__container {
@@ -335,31 +342,6 @@
     top: 14.5%;
     left: 105.3%;
   }
-
-
-  /* .guest-adaptive1 {
-    display: inline-block;
-  }
-
-  .guest-adaptive2 {
-    display: none;
-  }
-
-  .guest-adaptive3 {
-    display: inline-block;
-  }
-
-  .guest-adaptive4 {
-    display: none;
-  }
-
-  .guest-adaptive5 {
-    display: inline-block;
-  }
-
-  .guest-adaptive6 {
-    display: none;
-  } */
 
   .guests__ac-item {
     -webkit-column-gap: 60px;
@@ -578,10 +560,6 @@
 
   /* footer */
 
-  /* .footer {
-    background-image: url(../img/footer_line_1024.svg);
-  } */
-
   .footer__container {
     padding-right: 100px;
     padding-left: 100px;
@@ -732,11 +710,6 @@
     -webkit-transform: translateX(-120%);
     -ms-transform: translateX(-120%);
     transform: translateX(-120%);
-    -webkit-transition: visibility .3s ease-in-out, -webkit-transform .3s ease-in-out;
-    transition: visibility .3s ease-in-out, -webkit-transform .3s ease-in-out;
-    -o-transition: visibility .3s ease-in-out, transform .3s ease-in-out;
-    transition: visibility .3s ease-in-out, transform .3s ease-in-out;
-    transition: visibility .3s ease-in-out, transform .3s ease-in-out, -webkit-transform .3s ease-in-out;
   }
 
   .header__nav-top .nav__list-top {
@@ -924,7 +897,7 @@
   }
 
   .broadcast__image {
-    width: 287px;
+    width: 100%;
   }
 
   .broadcast__item-content {
@@ -1168,6 +1141,7 @@
 
   .podcast {
     padding-top: 99px;
+    padding-bottom: 58px;
   }
 
   .podcast__container {
@@ -1405,10 +1379,6 @@
 
   .about__top-left {
     width: calc(100% - 30px);
-    /* background-image: url(../img/about-top-svg2-768.svg);
-    background-repeat: no-repeat;
-    right: 15%;
-    bottom: 0; */
   }
 
   .about__top-left::after {
@@ -1440,34 +1410,6 @@
     min-width: 540px;
   }
 
-  /* .about__top-right {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: reverse;
-    -ms-flex-direction: row-reverse;
-    flex-direction: row-reverse;
-  } */
-
-  /* .about__top-svg1 {
-    right: 30%;
-    bottom: -139px;
-    display: inline;
-    background-image: url(../img/about-top-svg1_768.svg);
-    width: 639px;
-    height: 112px;
-  }
-
-  .about__top-svg2 {
-    right: 15%;
-    bottom: -139px;
-    width: 112px;
-    height: 112px;
-  } */
-
-  /* .about-svg {
-    position: absolute;
-    background-size: contain;
-  } */
-
   .swiper-img {
     -o-object-fit: contain;
     object-fit: contain;
@@ -1497,12 +1439,11 @@
     padding-left: 114px;
   }
 
-  /* footer */
+  .form__input {
+    margin-bottom: 28px;
+  }
 
-  /* .footer {
-    background-image: url(../img/footer_line_768.svg);
-    background-position: 0 438px;
-  } */
+  /* footer */
 
   .footer__container {
     padding-right: 114px;
@@ -1682,24 +1623,15 @@
     max-width: 380px;
   }
 
-  /* .guests__ac-list {
-    -webkit-column-count: 2;
-    -moz-column-count: 2;
-    column-count: 2;
-    -webkit-column-gap: 215px;
-    -moz-column-gap: 215px;
-    column-gap: 215px;
-    max-width: 366px;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin: 0;
-  } */
-
   .guests__ac-item {
     display: inline-block;
-    -webkit-column-count: 2;
-    -moz-column-count: 2;
-    column-count: 2;
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+    -webkit-column-gap: 16px;
+    -moz-column-gap: 16px;
+    column-gap: 16px;
+    padding-bottom: 10px;
   }
 
   .guests__ac-item:not(:nth-child(4n)) {
@@ -1836,6 +1768,21 @@
 @media (max-width: 514px) {
 
   /* header */
+
+  .header__logo-adaptive {
+    display: none;
+  }
+
+  .header__logo320 {
+    padding-top: 16px;
+    padding-bottom: 20px;
+    background-color: var(--color-Concrete);
+  }
+
+  .header__logo-adaptive320 {
+    display: inline-block;
+    padding-left: 32px;
+  }
 
   .nav-svg1 {
     display: none;
@@ -1982,6 +1929,14 @@
     display: flex;
   }
 
+  .header-btn-adaptive320-block {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-top: 3px;
+    margin-bottom: 3px;
+  }
+
   .header-btn-adaptive320-block1 {
     padding-top: 9px;
     padding-right: 37px;
@@ -1991,6 +1946,10 @@
   .header-btn-adaptive320-block2 {
     padding-left: 35px;
     padding-top: 9px;
+  }
+
+  .header-btn-adaptive320-common {
+    padding-bottom: 3px;
   }
 
   .header__btn-down-text {
@@ -2624,6 +2583,10 @@
     padding-bottom: 1px;
   }
 
+  .broadcast-left-adaptive320 {
+    background-position: 30px 30px;
+  }
+
   .broadcast__left-descr {
     margin-bottom: 7px;
   }
@@ -2631,6 +2594,10 @@
   .broadcast__left-link {
     padding: 8px 0;
     max-width: 110px;
+  }
+
+  .broadcast__left-image {
+    background-image: url(../img/broadcast-mic320.png);
   }
 
   /* guest */
@@ -2659,6 +2626,7 @@
     -webkit-column-gap: 47px;
     -moz-column-gap: 47px;
     column-gap: 47px;
+    padding-bottom: 0;
     width: 94%;
   }
 
@@ -2882,6 +2850,7 @@
     padding-top: 15px;
     padding-left: 22px;
     padding-bottom: 16px;
+    margin-bottom: 29px;
   }
 
   .form__btn {

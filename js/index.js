@@ -1,4 +1,3 @@
-
 // header search
 
 let searchBtn = document.querySelector('.btn-search');
@@ -8,34 +7,24 @@ let search = document.querySelector('.header__search');
 let closeSearch = document.querySelectorAll('.header__search-btn-close');
 
 searchBtn.addEventListener('click', function () {
-
   searchBtn.classList.toggle('btn-search--active');
 
   search.classList.toggle('header__search--active');
 
   document.body.classList.toggle('stop--scroll');
-
 });
 
 closeSearch.forEach(function (el) {
   el.addEventListener('click', function () {
-
     search.classList.remove('header__search--active');
-
   });
-
 });
 
 closeSearch.forEach(function (el) {
   el.addEventListener('click', function () {
-
     searchBtn.classList.remove('btn-search--active');
-
-
   });
-
 });
-
 
 // header enter
 
@@ -73,17 +62,14 @@ closeSearch.forEach(function (el) {
 
 // });
 
-
-
 // header enter new
 
 class Modal {
-
   constructor(options) {
     let defaulOptions = {
-      isOpen: () => { },
-      isClose: () => { }
-    }
+      isOpen: () => {},
+      isClose: () => {},
+    };
     this.options = Object.assign(defaulOptions, options);
     this.modal = document.querySelector('.modal');
     this.speed = false;
@@ -98,51 +84,64 @@ class Modal {
       'button',
       'select',
       'textarea',
-      '[tabindex]'
+      '[tabindex]',
     ];
     this.events();
   }
 
   events() {
     if (this.modal) {
-      document.addEventListener('click', function (e) {
-        const clickedElement = e.target.closest('[data-trigger]');
-        if (clickedElement) {
-          let target = clickedElement.dataset.trigger;
-          let animation = clickedElement.dataset.animation;
-          let speed = clickedElement.dataset.speed;
-          this.animation = animation ? animation : 'fade';
-          this.speed = speed ? parseInt(speed) : 300;
-          this.headerFormModal = document.querySelector(`[data-modal="${target}"]`);
-          this.open();
-          return;
-        }
+      document.addEventListener(
+        'click',
+        function (e) {
+          const clickedElement = e.target.closest('[data-trigger]');
+          if (clickedElement) {
+            let target = clickedElement.dataset.trigger;
+            let animation = clickedElement.dataset.animation;
+            let speed = clickedElement.dataset.speed;
+            this.animation = animation ? animation : 'fade';
+            this.speed = speed ? parseInt(speed) : 300;
+            this.headerFormModal = document.querySelector(
+              `[data-modal="${target}"]`
+            );
+            this.open();
+            return;
+          }
 
-        if (e.target.closest('.modal-close')) {
-          this.close();
-          return;
-        }
+          if (e.target.closest('.modal-close')) {
+            this.close();
+            return;
+          }
+        }.bind(this)
+      );
 
-      }.bind(this));
+      window.addEventListener(
+        'keydown',
+        function (e) {
+          if (e.keyCode == 27) {
+            if (this.isOpen) {
+              this.close();
+            }
+          }
+          if (e.keyCode == 9 && this.isOpen) {
+            this.focusCatch(e);
+            return;
+          }
+        }.bind(this)
+      );
 
-      window.addEventListener('keydown', function (e) {
-        if (e.keyCode == 27) {
-          if (this.isOpen) {
+      this.modal.addEventListener(
+        'click',
+        function (e) {
+          if (
+            !e.target.classList.contains('header__form-modal') &&
+            !e.target.closest('.header__form-modal') &&
+            this.isOpen
+          ) {
             this.close();
           }
-        }
-        if (e.keyCode == 9 && this.isOpen) {
-          this.focusCatch(e);
-          return;
-        }
-      }.bind(this));
-
-      this.modal.addEventListener('click', function (e) {
-        if (!e.target.classList.contains('header__form-modal') && !e.target.closest('.header__form-modal') && this.isOpen) {
-          this.close();
-        }
-      }.bind(this));
-
+        }.bind(this)
+      );
     }
   }
 
@@ -236,59 +235,54 @@ class Modal {
   unlockPadding() {
     this.fixBlocks.forEach((el) => {
       el.style.paddingRight = '0px';
-    })
+    });
     document.body.style.paddingRight = '0px';
   }
-
 }
 
 const modal = new Modal({
-
   isOpen: (modal) => {
     modal.headerFormModal.classList.add('asd');
   },
-  isClose: () => {
-  },
-
+  isClose: () => {},
 });
 
 // play-pause
 
-const btns = document.querySelectorAll('.play')
-const playIcons = document.querySelectorAll('.play__icon')
-const pauseIcons = document.querySelectorAll('.pause__icon')
-btns.forEach(btn => {
+const btns = document.querySelectorAll('.play');
+const playIcons = document.querySelectorAll('.play__icon');
+const pauseIcons = document.querySelectorAll('.pause__icon');
+btns.forEach((btn) => {
   btn.addEventListener('click', function (e) {
     let playIcon = btn.querySelector('.play__icon');
     let pauseIcon = btn.querySelector('.pause__icon');
     for (let el of playIcons) {
       if (el === playIcon) continue;
-      el.classList.add('play__icon--active')
+      el.classList.add('play__icon--active');
     }
     for (let el of pauseIcons) {
-      if (el == pauseIcon) continue
-      el.classList.remove('pause__icon--active')
+      if (el == pauseIcon) continue;
+      el.classList.remove('pause__icon--active');
     }
-    playIcon.classList.toggle('play__icon--active')
-    pauseIcon.classList.toggle('pause__icon--active')
-  })
-})
+    playIcon.classList.toggle('play__icon--active');
+    pauseIcon.classList.toggle('pause__icon--active');
+  });
+});
 
 //select
 
 const element = document.querySelector('.js-choice');
 const choices = new Choices(element, {
-
   searchEnabled: false,
   itemSelectText: '',
   shouldSort: false,
-
 });
 
 // accordion
 
-new Accordion('#accordion-container_1');
-
+new Accordion('#accordion-container_1', {
+  openOnInit: [0],
+});
 
 // tabs
 
@@ -299,17 +293,37 @@ tabsBtn.forEach(function (element) {
   element.addEventListener('click', function (e) {
     const path = e.currentTarget.dataset.path;
 
-    tabsBtn.forEach(function (btn) { btn.classList.remove('tabs-guests__btn--active') });
+    tabsBtn.forEach(function (btn) {
+      btn.classList.remove('tabs-guests__btn--active');
+    });
     e.currentTarget.classList.add('tabs-guests__btn--active');
 
-    tabsItem.forEach(function (element) { element.classList.remove('tabs-item--active') });
-    document.querySelector(`[data-target="${path}"]`).classList.add('tabs-item--active');
+    tabsItem.forEach(function (element) {
+      element.classList.remove('tabs-item--active');
+    });
+    document
+      .querySelector(`[data-target="${path}"]`)
+      .classList.add('tabs-item--active');
   });
 });
 
-// accordion podcasts
-new Accordion('#accordion-container_2');
+// btn podcast
 
+const btnPodcast = document.querySelector('.podcast__btn-down');
+const itemsAll = document.querySelectorAll('.podcast__item').length;
+let items = 8;
+
+btnPodcast.addEventListener('click', () => {
+  items += 4;
+  const array = Array.from(document.querySelector('.podcast__list').children);
+  const visibleItems = array.slice(0, items);
+
+  visibleItems.forEach((el) => el.classList.add('is-visible'));
+
+  if (visibleItems.length === itemsAll) {
+    btnPodcast.style.display = 'none';
+  }
+});
 
 // swiper
 
@@ -346,14 +360,12 @@ const swiper = new Swiper('.swiper-container', {
     1286: {
       slidesPerView: 4,
     },
-
   },
 
   // Navigation arrows
   navigation: {
     nextEl: '.swiper-button-next',
     prevEl: '.swiper-button-prev',
-
   },
 
   // And if we need scrollbar
@@ -362,15 +374,13 @@ const swiper = new Swiper('.swiper-container', {
   },
 
   a11y: {
-    paginationBulletMessage: 'Следующий слайд'
+    paginationBulletMessage: 'Следующий слайд',
   },
-
 });
 
 // swiper playlist320
 
 const swiper2 = new Swiper('.swiper-playlist320', {
-
   loop: true,
   slidesPerView: 2,
   spaceBetween: 10, // отступ между слайдами
@@ -393,9 +403,8 @@ const swiper2 = new Swiper('.swiper-playlist320', {
     514: {
       slidesPerView: 3,
     },
-  }
-
-})
+  },
+});
 
 // validation form
 
@@ -408,36 +417,34 @@ let validation = new JustValidate('#form', {
   errorLabelStyle: {
     color: '#D52B1E',
     font: '12px/ 12px Muller, sans- serif',
-  }
+  },
 });
 
-validation.addField('#name', [
-  {
-    rule: 'required', // проверяем ввели ли мы в поле "Имя" что- либо
-    errorMessage: 'Ошибка' // всплывающая ошибка
-  },
-
-  {
-    rule: 'minLength', // проверяем ввели ли в поле нужное кол- во символов
-    value: 2,  // минимальное количество символов
-    errorMessage: 'Минимум 2 символа' // всплывающая ошибка
-  }
-
-])
-
-  .addField('#email', [
+validation
+  .addField('#name', [
+    {
+      rule: 'required', // проверяем ввели ли мы в поле "Имя" что- либо
+      errorMessage: 'Ошибка', // всплывающая ошибка
+    },
 
     {
+      rule: 'minLength', // проверяем ввели ли в поле нужное кол- во символов
+      value: 2, // минимальное количество символов
+      errorMessage: 'Минимум 2 символа', // всплывающая ошибка
+    },
+  ])
+
+  .addField('#email', [
+    {
       rule: 'required', // проверяем ввели ли мы в  поле "Имя" что- либо
-      errorMessage: 'Ошибка' // всплывающая ошибка
+      errorMessage: 'Ошибка', // всплывающая ошибка
     },
 
     {
       rule: 'email', // тип ввода почта с собачкой, доменом и прочим.
-      errorMessage: 'Ошибка в почте' // всплывающая ошибка
-    }
-
-  ])
+      errorMessage: 'Ошибка в почте', // всплывающая ошибка
+    },
+  ]);
 
 // burger
 
@@ -447,34 +454,39 @@ let menu = document.querySelector('.header__nav-top');
 
 let menuLinks = menu.querySelectorAll('.nav__link-top');
 
-burger.addEventListener('click',
-  function () {
+burger.addEventListener('click', function () {
+  burger.classList.toggle('burger--active');
 
-    burger.classList.toggle('burger--active');
+  menu.classList.toggle('header__nav--active');
+  menu.style.transition =
+    'visibility .3s ease-in-out, transform .3s ease-in-out';
 
-    menu.classList.toggle('header__nav--active');
+  document.body.classList.toggle('stop--scroll');
+});
 
-    document.body.classList.toggle('stop--scroll');
+menu.addEventListener('transitionend', function () {
 
-  })
+if(!menu.classList.contains('header__nav--active')) {
+  menu.removeAttribute('style');
+}
+
+});
 
 menuLinks.forEach(function (el) {
   el.addEventListener('click', function () {
-
     burger.classList.remove('burger--active');
 
     menu.classList.remove('header__nav--active');
 
     document.body.classList.remove('stop-scroll');
-
-  })
-})
+  });
+});
 
 let el = document.getElementById('close-button');
 console.log(el.ariaLabel); // "Close"
-el.ariaLabel = "Развернуть меню навигации по сайту/ свернуть меню навигации по сайту"
+el.ariaLabel =
+  'Развернуть меню навигации по сайту/ свернуть меню навигации по сайту';
 console.log(el.ariaLabel); // "Close dialog"
 
 // accordion 320 header
 new Accordion('#accordion-container_3');
-
